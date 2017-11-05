@@ -1,0 +1,44 @@
+$tableSize: 500px;
+
+body {
+    background-color: grey;
+}
+.counterChoice {
+    margin: 30% auto;
+    width: 50%;
+    display: block;
+    text-align: center;
+}
+
+.counterChoiceButton {
+    display: inline-block;
+    margin: 20px;
+    font-size: 80;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+}
+
+button:active {
+    color: black;
+    background-color: white;
+}
+
+table {
+    margin: auto;
+    display: block;
+    border: 1px solid black;
+    width: $tableSize + 5;
+    height: $tableSize + 9;
+}
+
+td {
+    border: 1px solid black;
+    height: $tableSize/3;
+    width: $tableSize/3;
+}

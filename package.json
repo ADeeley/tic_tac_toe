@@ -1,0 +1,26 @@
+{
+  "name": "tic_tac_toe",
+  "version": "1.0.0",
+  "description": "game of Tic Tac Toe written in Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adeeley/tic_tac_toe.git"
+  },
+  "keywords": [
+    "game",
+    "javascript"
+  ],
+  "author": "Adam M Deeley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adeeley/tic_tac_toe/issues"
+  },
+  "homepage": "https://github.com/adeeley/tic_tac_toe#readme",
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
