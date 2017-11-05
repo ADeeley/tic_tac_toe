@@ -2,6 +2,10 @@ var player = {
     counter : undefined
 }
 
+var cpu = {
+    counter : undefined
+}
+
 function counterChoice() {
     /**
      * Displays two buttons, giving the player a choice of X's or O's.
@@ -44,13 +48,46 @@ function createBoard() {
     $("#content").append(board);
 }
 
+function placeCPUCounter() {
+    /**
+     * Randomly places a counter for the CPU.
+     */
+    var table = $("#gameBoard");
+    var freeCells = [];
+
+    // (1) identify the free cells
+    $("#gameBoard tr").each(function() {
+        $(this).find("td").each(function() {
+            let candidate = $(this);
+            if (candidate.html() == "") {
+                freeCells.push(candidate);
+            }
+        })
+    })
+    if (freeCells.length <= 0) return;
+    // (2) choose one free cell using the heuristic of choice
+    var chosenCell = freeCells[Math.floor(Math.random() * freeCells.length)]
+
+    // (3) place counter in that cell
+    
+    chosenCell.html(cpu.counter); 
+}
+
 window.onload = function() {
     // First screen - counter choice
 
     counterChoice();
     $("button").one("click", function() {
         player.counter = $(this).html();
+        if ($(this).html() == "X") {
+            cpu.counter = "O";
+        }
+        else {
+            cpu.counter = "X";
+        }
+
         console.log("Player has chosen : " + player.counter);
+        console.log("CPU is: " + cpu.counter);
         createBoard();
         mainGameHandler();
     })
@@ -63,7 +100,13 @@ function mainGameHandler() {
     console.log("MainGame Handler");
     $("#gameBoard td").on("click", function() {
         console.log("Recorded click");
-        $(this).html(player.counter);
+        if ($(this).html() == "") {
+            console.log("Valid click");
+            $(this).html(player.counter);
+            placeCPUCounter();
+            // check victory
+        }
+        
     })
 
 }
