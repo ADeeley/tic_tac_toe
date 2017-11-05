@@ -1,20 +1,22 @@
 body {
   background-color: grey; }
 
+.base, .counterChoice, .counterChoiceButton, td {
+  text-align: center;
+  font: 80px Arial, sans-serif;
+  text-decoration: none; }
+
 .counterChoice {
   margin: 30% auto;
   width: 50%;
-  display: block;
-  text-align: center; }
+  display: block; }
 
 .counterChoiceButton {
   display: inline-block;
   margin: 20px;
-  font-size: 80;
   width: 100px;
   height: 100px;
   border-radius: 5px;
-  text-decoration: none;
   border: none;
   cursor: pointer;
   color: white;

@@ -1,23 +1,29 @@
 $tableSize: 500px;
+$largeFont: Arial, sans-serif;
+
 
 body {
     background-color: grey;
 }
+.base {
+    text-align: center;
+    font: 80px $largeFont;
+    text-decoration: none;
+}
 .counterChoice {
+    @extend .base;
     margin: 30% auto;
     width: 50%;
     display: block;
-    text-align: center;
 }
 
 .counterChoiceButton {
+    @extend .base;
     display: inline-block;
     margin: 20px;
-    font-size: 80;
     width: 100px;
     height: 100px;
     border-radius: 5px;
-    text-decoration: none;
     border: none;
     cursor: pointer;
     color: white;
@@ -38,6 +44,7 @@ table {
 }
 
 td {
+    @extend .base;
     border: 1px solid black;
     height: $tableSize/3;
     width: $tableSize/3;

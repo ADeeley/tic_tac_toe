@@ -63,7 +63,7 @@ function mainGameHandler() {
     console.log("MainGame Handler");
     $("#gameBoard td").on("click", function() {
         console.log("Recorded click");
-        $(this).html("Test");
+        $(this).html(player.counter);
     })
 
 }
