@@ -14,7 +14,11 @@ function counterChoice() {
     /**
      * Displays two buttons, giving the player a choice of X's or O's.
      */
+    var instructText = $("<h2>Choose your marker</h2>")
+        .attr("id", "instructText");
     $("#content").empty();
+    var orTxt = $("<h3>or</h3>") 
+        .attr("id", "counterOr");
     var xBtn = $("<button></button")
         .text("X")
         .addClass("counterChoiceButton")
@@ -25,9 +29,9 @@ function counterChoice() {
         .attr("id", "oButton");
     var box = $("<div></div>")
         .addClass("counterChoice")
-        .append(xBtn, oBtn);
+        .append(xBtn, orTxt, oBtn);
 
-    $("#content").append(box);
+    $("#content").append(instructText, box);
 }
 
 function gameComplete() {

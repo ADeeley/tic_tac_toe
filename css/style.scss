@@ -1,22 +1,23 @@
 $tableSize: 500px;
-$largeFont: Arial, sans-serif;
+$largeFont: "Indie Flower";
 
 
 body {
 }
 .base {
     text-align: center;
-    font: 80px $largeFont;
+    font: 100px $largeFont;
     text-decoration: none;
 }
 .counterChoice {
     @extend .base;
-    margin: 30% auto;
+    margin: auto;
     width: 50%;
     display: block;
 }
 
 .counterChoiceButton {
+    font: 80px $largeFont;
     @extend .base;
     display: inline-block;
     margin: 20px;
@@ -32,6 +33,10 @@ body {
 button:active {
     color: black;
     background-color: white;
+}
+
+button:hover {
+    background-color: grey;
 }
 
 table {
@@ -66,4 +71,15 @@ table tr:last-child td {
 
 table tr td:last-child {
     border-right: 0;
+}
+
+#instructText {
+    @extend .base;
+    margin: auto auto 10% auto;
+}
+#counterOr {
+    @extend .base;
+    font-size: 70px;
+    display: inline-block;
+    margin: 0;
 }
