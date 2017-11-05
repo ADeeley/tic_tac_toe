@@ -56,7 +56,6 @@ function createBoard() {
     $("#content").append(board);
 
 }
-
 function placeCPUCounter() {
     /**
      * Randomly places a counter for the CPU.
@@ -111,11 +110,12 @@ function checkForEndgame() {
         for (var j=0; j<winningCombinations[i].length; j++) {
             if (xCells.indexOf(winningCombinations[i][j]) != -1) {
                 matches++;
+                if (matches == 3) {
+                    highlightWinningLine(winningCombinations[i]);
+                    console.log("X Wins");
+                    return "X";
+                }
             }
-        }
-        if (matches == 3) {
-            console.log("X Wins");
-            return "X";
         }
     }
     
@@ -125,15 +125,25 @@ function checkForEndgame() {
         for (var j=0; j<winningCombinations[i].length; j++) {
             if (oCells.indexOf(winningCombinations[i][j]) != -1) {
                 matches++;
+                if (matches == 3) {
+                    highlightWinningLine(winningCombinations[i]);
+                    console.log("O Wins");
+                    return "O";
+                }
             }
-        }
-        if (matches == 3) {
-            console.log("O Wins");
-            return "O";
         }
     }
     // no winners
     return -1;
+}
+
+function highlightWinningLine(arr) {
+    /**
+     * Circles the line created.
+     */
+    for (var i=0; i<arr.length; i++) {
+        $("#"+arr[i]).addClass("highlightLine");
+    }
 }
 
 window.onload = function() {

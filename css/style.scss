@@ -30,6 +30,11 @@ body {
     background-color: black;
 }
 
+.highlightLine {
+    @extend td;
+    background-color: grey;
+}
+
 button:active {
     color: black;
     background-color: white;

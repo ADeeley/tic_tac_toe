@@ -1,4 +1,4 @@
-.base, .counterChoice, .counterChoiceButton, td, #instructText, #counterOr {
+.base, .counterChoice, .counterChoiceButton, td, .highlightLine, #instructText, #counterOr {
   text-align: center;
   font: 100px "Indie Flower";
   text-decoration: none; }
@@ -20,6 +20,9 @@
   color: white;
   background-color: black; }
 
+.highlightLine {
+  background-color: grey; }
+
 button:active {
   color: black;
   background-color: white; }
@@ -34,23 +37,23 @@ table {
   width: 505px;
   height: 509px; }
 
-table td {
+table td, table .highlightLine {
   border: 5px solid black; }
 
-td {
+td, .highlightLine {
   height: 166.6666666667px;
   width: 166.6666666667px; }
 
-table tr:first-child td {
+table tr:first-child td, table tr:first-child .highlightLine {
   border-top: 0; }
 
-table tr td:first-child {
+table tr td:first-child, table tr .highlightLine:first-child {
   border-left: 0; }
 
-table tr:last-child td {
+table tr:last-child td, table tr:last-child .highlightLine {
   border-bottom: 0; }
 
-table tr td:last-child {
+table tr td:last-child, table tr .highlightLine:last-child {
   border-right: 0; }
 
 #instructText {
