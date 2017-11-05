@@ -160,15 +160,17 @@ function mainGameHandler() {
     /**
      * Control is passed to this function when the player has chosen a counter type.
      */
+    var gameCompleted = false;
     console.log("MainGame Handler");
     $("#gameBoard td").on("click", function() {
         console.log("Recorded click");
-        if ($(this).html() == "") {
+        if ($(this).html() == "" && gameCompleted == false) {
             console.log("Valid click");
 
             $(this).html(player.counter);
             var victor = checkForEndgame();
             if (victor != -1) {
+                gameCompleted = true;
                 return endGameSequence(victor);
             }
             // CPU turn
@@ -176,6 +178,7 @@ function mainGameHandler() {
             checkForEndgame();
             var victor = checkForEndgame();
             if (victor != -1) {
+                gameCompleted = true;
                 return endGameSequence(victor);
             }
         }

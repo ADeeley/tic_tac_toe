@@ -3,7 +3,6 @@ $largeFont: Arial, sans-serif;
 
 
 body {
-    background-color: grey;
 }
 .base {
     text-align: center;
@@ -38,14 +37,33 @@ button:active {
 table {
     margin: auto;
     display: block;
-    border: 1px solid black;
+    border-collapse: collapse;
     width: $tableSize + 5;
     height: $tableSize + 9;
 }
 
+table td {
+    border: 5px solid black;
+}
+
 td {
     @extend .base;
-    border: 1px solid black;
     height: $tableSize/3;
     width: $tableSize/3;
+}
+
+table tr:first-child td {
+    border-top: 0;
+}
+
+table tr td:first-child {
+    border-left: 0;
+}
+
+table tr:last-child td {
+    border-bottom: 0;
+}
+
+table tr td:last-child {
+    border-right: 0;
 }
