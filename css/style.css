@@ -1,4 +1,4 @@
-.base, .counterChoice, .counterChoiceButton, td, .highlightLine, #instructText, #counterOr {
+.base, .counterChoice, .counterChoiceButton, td, .highlightLine, #instructText, #counterOr, #alertBacking {
   text-align: center;
   font: 100px "Indie Flower";
   text-decoration: none; }
@@ -63,5 +63,11 @@ table tr td:last-child, table tr .highlightLine:last-child {
   font-size: 70px;
   display: inline-block;
   margin: 0; }
+
+#alertBacking {
+  margin: 100px;
+  display: absolute;
+  background-color: grey;
+  opacity: 50%; }
 
 /*# sourceMappingURL=style.css.map */

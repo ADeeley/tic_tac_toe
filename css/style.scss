@@ -82,9 +82,17 @@ table tr td:last-child {
     @extend .base;
     margin: auto auto 10% auto;
 }
+
 #counterOr {
     @extend .base;
     font-size: 70px;
     display: inline-block;
     margin: 0;
+}
+
+#alertBacking {
+    @extend .base;
+    display: absolute;
+    background-color: grey;
+    opacity: 50%;
 }

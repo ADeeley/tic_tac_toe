@@ -1,3 +1,12 @@
+Set.prototype.isSuperset = function(subset) {
+    for (var elem of subset) {
+        if (!this.has(elem)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 var player = {
     counter : undefined
 }
@@ -6,7 +15,7 @@ var cpu = {
     counter : undefined
 }
 
-var winningCombinations = [["1","2","3"], ["4","5","6"], ["7","8","9"],
+var winningCombos = [["1","2","3"], ["4","5","6"], ["7","8","9"],
                            ["1","4","7"], ["2","5","8"], ["3","6","9"],
                            ["1","5","9"], ["7","5","3"]]; 
 
@@ -14,21 +23,14 @@ function counterChoice() {
     /**
      * Displays two buttons, giving the player a choice of X's or O's.
      */
-    var instructText = $("<h2>Choose your marker</h2>")
-        .attr("id", "instructText");
+    var instructText = $("<h2 id='instructText'>Choose your marker</h2>")
     $("#content").empty();
-    var orTxt = $("<h3>or</h3>") 
-        .attr("id", "counterOr");
-    var xBtn = $("<button></button")
+    var orTxt = $("<h3 id='counterOr'>or</h3>");
+    var xBtn = $("<button id='xButton' class='counterChoiceButton'>X</button")
         .text("X")
-        .addClass("counterChoiceButton")
-        .attr("id", "xButton");
-    var oBtn = $("<button></button")
-        .text("O")
-        .addClass("counterChoiceButton")
-        .attr("id", "oButton");
-    var box = $("<div></div>")
-        .addClass("counterChoice")
+    var oBtn = $("<button id='oButton' class='counterChoiceButton'>O</button")
+        .text("O");
+    var box = $("<div class='counterChoice'></div>")
         .append(xBtn, orTxt, oBtn);
 
     $("#content").append(instructText, box);
@@ -77,64 +79,47 @@ function placeCPUCounter() {
     var chosenCell = freeCells[Math.floor(Math.random() * freeCells.length)]
 
     // (3) place counter in that cell
-    
     chosenCell.html(cpu.counter); 
 }
 
 function checkForEndgame() {
     /**
-     * Checks the cells for matching lines.
+     * Checks the cells for matching lines by firstly generating a set of 
+     * counter positions for x and for o and then checking if the 
+     * cells are superset of any of the winning combos.
      */
-    // (1) generate array of counter positions for x and for o
-    // (2) for x and o, separately, check if any of the winning combinations are within
-    // the arrays
-    var xCells = [];
-    var oCells = [];
+    var xCells = new Set();
+    var oCells = new Set();
 
     $("#gameBoard tr").each(function() {
         $(this).find("td").each(function() {
             let candidate = $(this);
             if (candidate.html() == "X") {
-                xCells.push(candidate.attr("id"));
+                xCells.add(candidate.attr("id"));
             }
             else if (candidate.html() == "O") {
-                oCells.push(candidate.attr("id"));
+                oCells.add(candidate.attr("id"));
             }
         })
     })
-    //console.log("Xcells: " + xCells + " oCells: " + oCells);
 
-    // Check for X
-    for (var i=0; i<winningCombinations.length; i++) {
-        var matches = 0;
-        for (var j=0; j<winningCombinations[i].length; j++) {
-            if (xCells.indexOf(winningCombinations[i][j]) != -1) {
-                matches++;
-                if (matches == 3) {
-                    highlightWinningLine(winningCombinations[i]);
-                    console.log("X Wins");
-                    return "X";
-                }
-            }
+    for (var combo of winningCombos) {
+        if (xCells.isSuperset(combo)) {
+            console.log(combo);
+            highlightWinningLine(combo);
+            console.log("X Wins");
+            return "X";
         }
     }
-    
-    // Check for O
-    for (var i=0; i<winningCombinations.length; i++) {
-        var matches = 0;
-        for (var j=0; j<winningCombinations[i].length; j++) {
-            if (oCells.indexOf(winningCombinations[i][j]) != -1) {
-                matches++;
-                if (matches == 3) {
-                    highlightWinningLine(winningCombinations[i]);
-                    console.log("O Wins");
-                    return "O";
-                }
-            }
+
+    for (var combo of winningCombos) {
+        if (oCells.isSuperset(combo)) {
+            console.log(combo);
+            highlightWinningLine(combo);
+            console.log("O Wins");
+            return "O";
         }
     }
-    // no winners
-    return -1;
 }
 
 function highlightWinningLine(arr) {
@@ -144,6 +129,14 @@ function highlightWinningLine(arr) {
     for (var i=0; i<arr.length; i++) {
         $("#"+arr[i]).addClass("highlightLine");
     }
+}
+
+function declareWinner(winner) {
+    var alertBacking = $("<div></div>")
+        .attr("id", "alertBacking");
+    var alertText = $("<h2>" + winner + " wins</h2>");
+    alertBacking.append(alertText);
+    $("#gameBoard").append(alertBacking);
 }
 
 window.onload = function() {
@@ -176,14 +169,12 @@ function mainGameHandler() {
      */
     var gameCompleted = false;
     console.log("MainGame Handler");
-    $("#gameBoard td").on("click", function() {
-        console.log("Recorded click");
-        if ($(this).html() == "" && gameCompleted == false) {
-            console.log("Valid click");
 
+    $("#gameBoard td").on("click", function() {
+        if ($(this).html() == "" && gameCompleted == false) {
             $(this).html(player.counter);
             var victor = checkForEndgame();
-            if (victor != -1) {
+            if (victor) {
                 gameCompleted = true;
                 return endGameSequence(victor);
             }
@@ -191,7 +182,7 @@ function mainGameHandler() {
             placeCPUCounter();
             checkForEndgame();
             var victor = checkForEndgame();
-            if (victor != -1) {
+            if (victor) {
                 gameCompleted = true;
                 return endGameSequence(victor);
             }
