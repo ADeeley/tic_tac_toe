@@ -56,8 +56,8 @@ function createBoard() {
         .addClass("board")
         .attr("id", "gameBoard");
     $("#content").append(board);
-
 }
+
 function placeCPUCounter() {
     /**
      * Randomly places a counter for the CPU.
@@ -179,7 +179,7 @@ function mainGameHandler() {
                 return endGameSequence(victor);
             }
             // CPU turn
-            placeCPUCounter();
+            setTimeout(placeCPUCounter, Math.random()* 1000);
             checkForEndgame();
             var victor = checkForEndgame();
             if (victor) {
@@ -187,7 +187,5 @@ function mainGameHandler() {
                 return endGameSequence(victor);
             }
         }
-        
     })
-
 }
