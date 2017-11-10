@@ -1,18 +1,15 @@
 $tableSize: 500px;
 $largeFont: "Indie Flower";
 
-
-body {
-}
 .base {
     text-align: center;
     font: 100px $largeFont;
     text-decoration: none;
 }
+
 .counterChoice {
     @extend .base;
     margin: auto;
-    width: 50%;
     display: block;
 }
 

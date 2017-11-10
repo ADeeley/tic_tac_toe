@@ -19,6 +19,7 @@ var winningCombos = [["1","2","3"], ["4","5","6"], ["7","8","9"],
                            ["1","4","7"], ["2","5","8"], ["3","6","9"],
                            ["1","5","9"], ["7","5","3"]]; 
 
+
 function counterChoice() {
     /**
      * Displays two buttons, giving the player a choice of X's or O's.
@@ -88,36 +89,28 @@ function checkForEndgame() {
      * counter positions for x and for o and then checking if the 
      * cells are superset of any of the winning combos.
      */
-    var xCells = new Set();
-    var oCells = new Set();
 
-    $("#gameBoard tr").each(function() {
-        $(this).find("td").each(function() {
-            let candidate = $(this);
-            if (candidate.html() == "X") {
-                xCells.add(candidate.attr("id"));
-            }
-            else if (candidate.html() == "O") {
-                oCells.add(candidate.attr("id"));
-            }
+    var cells;
+    var counters = ["X", "O"];
+
+    for (var counter of counters) {
+        cells = new Set();
+        $("#gameBoard tr").each(function() {
+            $(this).find("td").each(function() {
+                let candidate = $(this);
+                if (candidate.html() == counter) {
+                    cells.add(candidate.attr("id"));
+                }
+            })
         })
-    })
 
-    for (var combo of winningCombos) {
-        if (xCells.isSuperset(combo)) {
-            console.log(combo);
-            highlightWinningLine(combo);
-            console.log("X Wins");
-            return "X";
-        }
-    }
-
-    for (var combo of winningCombos) {
-        if (oCells.isSuperset(combo)) {
-            console.log(combo);
-            highlightWinningLine(combo);
-            console.log("O Wins");
-            return "O";
+        for (var combo of winningCombos) {
+            if (cells.isSuperset(combo)) {
+                console.log(combo);
+                highlightWinningLine(combo);
+                console.log(counter + " Wins");
+                return counter;
+            }
         }
     }
 }
@@ -171,6 +164,7 @@ function mainGameHandler() {
     console.log("MainGame Handler");
 
     $("#gameBoard td").on("click", function() {
+        
         if ($(this).html() == "" && gameCompleted == false) {
             $(this).html(player.counter);
             var victor = checkForEndgame();
