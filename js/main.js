@@ -7,6 +7,8 @@ Set.prototype.isSuperset = function(subset) {
     return true;
 }
 
+// State object ================================================
+
 var states  = {
     counterChoice : null,
     gameBoard : null,
@@ -34,6 +36,8 @@ states.changeTo = function(changeTo) {
     }
 } 
 
+// Player object ================================================
+
 var players = {
     user : undefined,
     cpu : undefined
@@ -52,83 +56,89 @@ players.chooseCounter = function(choice) {
     console.log("CPU is: " + players.cpu);
 }
 
-var winningCombos = [["1","2","3"], 
-                     ["4","5","6"], 
-                     ["7","8","9"],
-                     ["1","4","7"], 
-                     ["2","5","8"], 
-                     ["3","6","9"],
-                     ["1","5","9"], 
-                     ["7","5","3"]]; 
+// Game object ================================================
 
-function placeCPUCounter() {
-    /**
-     * Randomly places a counter for the CPU.
-     */
-    var table = $("#gameBoard");
-    var freeCells = [];
+function Game() {
+    var winningCombos = [["1","2","3"], 
+                         ["4","5","6"], 
+                         ["7","8","9"],
+                         ["1","4","7"], 
+                         ["2","5","8"], 
+                         ["3","6","9"],
+                         ["1","5","9"], 
+                         ["7","5","3"]]; 
 
-    // (1) identify the free cells
-    $("#gameBoard tr").each(function() {
-        $(this).find("td").each(function() {
-            let candidate = $(this);
-            if (candidate.html() == "") {
-                freeCells.push(candidate);
-            }
-        })
-    })
-    if (freeCells.length <= 0) return;
-    // (2) choose one free cell using the heuristic of choice
-    var chosenCell = freeCells[Math.floor(Math.random() * freeCells.length)]
+    this.playerTurn = function() {
+        console.log("Player turn");
+        let promise = new Promise(resolve, reject
+        document.getElementById("gameBoard").addEventListener("click", 
+    };
 
-    // (3) place counter in that cell
-    chosenCell.html(cpu.counter); 
-}
+    this.cpuTurn = function() {
+        /**
+         * Randomly places a counter for the CPU.
+         */
+        var table = $("#gameBoard");
+        var freeCells = [];
 
-function checkForEndgame() {
-    /**
-     * Checks the cells for matching lines by firstly generating a set of 
-     * counter positions for x and for o and then checking if the 
-     * cells are superset of any of the winning combos.
-     */
-
-    var cells;
-    var counters = ["X", "O"];
-
-    for (var counter of counters) {
-        cells = new Set();
+        // (1) identify the free cells
         $("#gameBoard tr").each(function() {
             $(this).find("td").each(function() {
                 let candidate = $(this);
-                if (candidate.html() == counter) {
-                    cells.add(candidate.attr("id"));
+                if (candidate.html() == "") {
+                    freeCells.push(candidate);
                 }
             })
         })
+        if (freeCells.length <= 0) return;
+        // (2) choose one free cell using the heuristic of choice
+        var chosenCell = freeCells[Math.floor(Math.random() * freeCells.length)]
 
-        for (var combo of winningCombos) {
-            if (cells.isSuperset(combo)) {
-                console.log(combo);
-                highlightWinningLine(combo);
-                console.log(counter + " Wins");
-                return counter;
+        // (3) place counter in that cell
+        chosenCell.html(cpu.counter); 
+    };
+
+    this.checkForEndgame = function() {
+        /**
+         * Checks the cells for matching lines by firstly generating a set of 
+         * counter positions for x and for o and then checking if the 
+         * cells are superset of any of the winning combos.
+         */
+
+        var cells;
+        var counters = ["X", "O"];
+
+        for (var counter of counters) {
+            cells = new Set();
+            $("#gameBoard tr").each(function() {
+                $(this).find("td").each(function() {
+                    let candidate = $(this);
+                    if (candidate.html() == counter) {
+                        cells.add(candidate.attr("id"));
+                    }
+                })
+            })
+
+            for (var combo of winningCombos) {
+                if (cells.isSuperset(combo)) {
+                    console.log(combo);
+                    highlightWinningLine(combo);
+                    console.log(counter + " Wins");
+                    return counter;
+                }
             }
         }
-    }
-}
+    };
 
-function highlightWinningLine(arr) {
-    /**
-     * Circles the line created.
-     */
-    for (var i=0; i<arr.length; i++) {
-        $("#"+arr[i]).addClass("highlightLine");
-    }
-}
-
-function click() {
-    console.log(event.target.innerHTML);
-}
+    this.highlightWinningLine = function(arr) {
+        /**
+         * Circles the line created.
+         */
+        for (var i=0; i<arr.length; i++) {
+            $("#"+arr[i]).addClass("highlightLine");
+        }
+    };
+};
 
 window.onload = function() {
     /**
@@ -136,11 +146,16 @@ window.onload = function() {
      */
     // Set the states to elements of the DOM
     states.counterChoice = document.getElementById("counterChoice");
-    states.gameBoard = document.getElementById("gameBoard");
-    states.endGame = document.getElementById("endGameALert");
+    states.gameBoard = document.getElementById("mainBoard");
+    states.endGame = document.getElementById("endGameAlert");
 
+    // Event lister for the counter choice
     var buttons = document.getElementById("buttons"); 
     buttons.addEventListener("click", eventControler.chooseCounter);
+    
+
+
+
 }
 
 var eventControler = { 
@@ -149,10 +164,13 @@ var eventControler = {
      */
     chooseCounter : function() {
         players.chooseCounter(event.target.innerHTML);
+        states.changeTo("gameBoard");
         eventControler.playGame();
     },
 
     playGame : function() {
+        var game = new Game();
+        game.playerTurn();
         console.log("Reached playgame");
         //add promise for user placing counter
         //user places counter
