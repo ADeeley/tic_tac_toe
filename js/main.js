@@ -52,11 +52,28 @@ function createBoard() {
     /**
      * Displays the game board and waits for the player to place a piece.
      */
+    /*
     $("#content").empty();
     var board = $("<table><tr><td id='1'></td><td id='2'></td><td id='3'></td><tr><td id='4'></td><td id='5'></td><td id='6'></td></tr><tr><td id='7'></td><td id='8'></td><td id='9'></td></tr></table>")
         .addClass("board")
         .attr("id", "gameBoard");
     $("#content").append(board);
+    */
+    var content = $("#content");
+    var board = $("<table></table")
+        .addClass("board")
+        .attr("id", "gameBoard");
+    var id = 1;
+
+    for (r=0; r<3; r++) {
+        var row = $("<tr></tr>");
+        for (c=0; c<3; c++) {
+            row.append("<td id=" + id++ + "></td>");
+        }
+        board.append(row);
+    }
+    content.empty();
+    content.append(board);
 }
 
 function placeCPUCounter() {
