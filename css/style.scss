@@ -7,12 +7,6 @@ $largeFont: "Indie Flower";
     text-decoration: none;
 }
 
-.counterChoice {
-    @extend .base;
-    margin: auto;
-    display: block;
-}
-
 .counterChoiceButton {
     font: 80px $largeFont;
     @extend .base;
@@ -25,6 +19,10 @@ $largeFont: "Indie Flower";
     cursor: pointer;
     color: white;
     background-color: black;
+}
+
+#counterOr {
+    display: inline-block;
 }
 
 .highlightLine {
@@ -75,17 +73,37 @@ table tr td:last-child {
     border-right: 0;
 }
 
+//========================================================
+//==================== State css =========================
+//========================================================
+
+#counterChoice {
+    @extend .base;
+    margin: auto;
+    display: block;
+}
+
+#mainBoard {
+    display: none;
+}
+#endGameAlert {
+    display: none;
+}
+
+//========================================================
+//==================== State css =========================
+//========================================================
+
+#buttons {
+    display: block;
+    margin: auto;
+    text-align: center;
+}
 #instructText {
     @extend .base;
     margin: auto auto 10% auto;
 }
 
-#counterOr {
-    @extend .base;
-    font-size: 70px;
-    display: inline-block;
-    margin: 0;
-}
 
 #alertBacking {
     @extend .base;
