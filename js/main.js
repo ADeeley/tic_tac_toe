@@ -51,10 +51,10 @@ states.changeTo = function(changeTo) {
             states.gameBoard.style.display = "block";
             states.endGame.style.display = "none";
             break;
-        case "endGame":
-            counterChoice.style.display = "none";
-            gameBoard.style.display = "block";
-            endGame.style.display = "block";
+        case "endgame":
+            states.counterChoice.style.display = "none";
+            states.gameBoard.style.display = "block";
+            states.endGame.style.display = "block";
             break;
     }
 } 
@@ -91,12 +91,13 @@ function Game() {
                          ["1","5","9"], 
                          ["7","5","3"]]; 
     var pendingCPUMove = false;
+    var endgame = false;
     // Keep a reference to this object - used for event handling where
     // "this" refers to the object that called the event.
     var self = this;
 
     this.playerTurn = function() {
-        if (states.gameBoard.style.display === "block" &! pendingCPUMove) {
+        if (states.gameBoard.style.display === "block" &! pendingCPUMove &! endgame) {
             pendingCPUMove = true;
             event.target.innerHTML = players.user;
             if (!self.checkForEndgame()){
@@ -116,6 +117,7 @@ function Game() {
         var choice = Math.floor(Math.random() * freeCells.length);
         freeCells[choice].innerHTML = players.cpu;
 
+        self.checkForEndgame();
         pendingCPUMove = false;
     }
 
@@ -137,6 +139,8 @@ function Game() {
             for (var combo of winningCombos) {
                 if (cells.isSuperset(combo)) {
                     this.highlightWinningLine(combo);
+                    self.endgame = true;
+                    self.declareWinner(counter);
                     return true;
                 }
             }
@@ -152,6 +156,14 @@ function Game() {
             document.getElementById(arr[i]).className += "highlightLine";
         }
     }
+    
+    this.declareWinner = function(winner) {
+        states.changeTo("endgame");
+        document.getElementById("endGameAlert").innerHTML = winner + " Wins!";
+
+    }
+
+
 };
 
 window.onload = function() {
@@ -183,16 +195,4 @@ var eventControler = {
             states.changeTo("gameBoard");
         }
     },
-
-        //add promise for user placing counter
-        //user places counter
-        //if user victory:
-        //      endgame
-        //else:
-        //      cpu places counter
-        //      if cpu victory:
-        //              endgame
-        //      else:
-        //              add new player promise
-        //      
 }

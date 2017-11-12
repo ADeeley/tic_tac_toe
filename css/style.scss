@@ -73,10 +73,6 @@ table tr td:last-child {
     border-right: 0;
 }
 
-//========================================================
-//==================== State css =========================
-//========================================================
-
 #counterChoice {
     @extend .base;
     margin: auto;
@@ -86,24 +82,28 @@ table tr td:last-child {
 #gameBoard {
     display: none;
 }
-#endGameAlert {
-    display: none;
-}
 
-//========================================================
-//==================== State css =========================
-//========================================================
+#endGameAlert {
+    @extend .base;
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 0.8, 0.8, 0.8);
+    border-radius: 5px;
+}
 
 #buttons {
     display: block;
     margin: auto;
     text-align: center;
 }
+
 #instructText {
     @extend .base;
     margin: auto auto 10% auto;
 }
-
 
 #alertBacking {
     @extend .base;
