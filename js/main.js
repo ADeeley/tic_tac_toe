@@ -7,6 +7,29 @@ Set.prototype.isSuperset = function(subset) {
     return true;
 }
 
+// Utilities ==================================================
+
+function getCellsContaining(val) {
+    /**
+     * Returns an array of objects containing the given value
+     */
+    var table = document.getElementById("gameBoard");
+
+    // identify the free cells
+    var chosenCells = [];
+    var cell;
+    for (r=0; r<3; r++) {
+        for (c=0; c<3; c++) {
+            cell = table.rows[r].cells[c];
+            if (cell.innerHTML == val) {
+                chosenCells.push(cell);
+            }
+        }
+    }
+
+    return chosenCells;
+}
+
 // State object ================================================
 
 var states  = {
@@ -59,7 +82,7 @@ players.chooseCounter = function(choice) {
 // Game object ================================================
 
 function Game() {
-    var winningCombos = [["1","2","3"], 
+    winningCombos = [["1","2","3"], 
                          ["4","5","6"], 
                          ["7","8","9"],
                          ["1","4","7"], 
@@ -73,12 +96,12 @@ function Game() {
     var self = this;
 
     this.playerTurn = function() {
-        console.log("Player turn");
         if (states.gameBoard.style.display === "block" &! pendingCPUMove) {
             pendingCPUMove = true;
-            console.log("Player counter placed");
             event.target.innerHTML = players.user;
-            self.cpuTurn();
+            if (!self.checkForEndgame()){
+                self.cpuTurn();
+            }
         }
     }
 
@@ -86,25 +109,13 @@ function Game() {
         /**
          * Randomly places a counter for the CPU.
          */
-        var table = document.getElementById("gameBoard");
-
-        // identify the free cells
-        var freeCells = [];
-        var cell;
-        for (r=0; r<3; r++) {
-            for (c=0; c<3; c++) {
-                cell = table.rows[r].cells[c];
-                if (cell.innerHTML == "") {
-                    freeCells.push(cell);
-                }
-            }
-        }
-        console.log(freeCells);
+        freeCells = getCellsContaining("");
 
         if (freeCells.length <= 0) return;
         // choose one free cell using the heuristic of choice
         var choice = Math.floor(Math.random() * freeCells.length);
         freeCells[choice].innerHTML = players.cpu;
+
         pendingCPUMove = false;
     }
 
@@ -117,27 +128,20 @@ function Game() {
 
         var cells;
         var counters = ["X", "O"];
-
         for (var counter of counters) {
             cells = new Set();
-            $("#gameBoard tr").each(function() {
-                $(this).find("td").each(function() {
-                    let candidate = $(this);
-                    if (candidate.html() == counter) {
-                        cells.add(candidate.attr("id"));
-                    }
-                })
-            })
+            for (var cell of getCellsContaining(counter)) {
+                cells.add(cell.id);
+            }
 
             for (var combo of winningCombos) {
                 if (cells.isSuperset(combo)) {
-                    console.log(combo);
-                    highlightWinningLine(combo);
-                    console.log(counter + " Wins");
-                    return counter;
+                    this.highlightWinningLine(combo);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     this.highlightWinningLine = function(arr) {
@@ -145,7 +149,7 @@ function Game() {
          * Circles the line created.
          */
         for (var i=0; i<arr.length; i++) {
-            $("#"+arr[i]).addClass("highlightLine");
+            document.getElementById(arr[i]).className += "highlightLine";
         }
     }
 };
