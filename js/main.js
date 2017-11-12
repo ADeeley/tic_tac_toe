@@ -13,9 +13,6 @@ function getCellsContaining(val) {
     /**
      * Returns an array of objects containing the given value
      */
-    var table = document.getElementById("gameBoard");
-
-    // identify the free cells
     var chosenCells = [];
     var cell;
     for (r=0; r<3; r++) {
@@ -30,8 +27,6 @@ function getCellsContaining(val) {
 }
 
 function clearAllCells() {
-    var table = document.getElementById("gameBoard");
-
     for (r=0; r<3; r++) {
         for (c=0; c<3; c++) {
             table.rows[r].cells[c].innerHTML = "";
@@ -160,10 +155,18 @@ function Game() {
                 if (cells.isSuperset(combo)) {
                     this.highlightWinningLine(combo);
                     endgame = true;
-                    self.declareWinner(counter);
+                    self.declareWinner(counter + " Wins!");
                     return true;
                 }
             }
+        }
+        // Catch draws
+        console.log(getCellsContaining(""));
+        if (getCellsContaining("").length < 1) {
+            console.log("DRAW!");
+            endgame = true;
+            self.declareWinner("Draw!");
+            return true;
         }
         return false;
     }
@@ -181,7 +184,7 @@ function Game() {
         setTimeout(() => {
             states.changeTo("endgame");
             var gameAlert = document.getElementById("alert");
-            gameAlert.innerHTML = winner + " Wins!";
+            gameAlert.innerHTML = winner;
         }, 500);
     }
 
@@ -189,7 +192,6 @@ function Game() {
         // loop over board - set all cells to "".
         // set the game state to counerChoice
 
-        var table = document.getElementById("gameBoard");
         console.log("Reseting");
         clearAllCells();
         states.changeTo("counterChoice");
@@ -203,6 +205,8 @@ window.onload = function() {
     /**
      * Sets the initial variables and event handlers.
      */
+    table = document.getElementById("gameBoard");
+
     var game = new Game();
     // Set the states to elements of the DOM
     states.counterChoice = document.getElementById("counterChoice");

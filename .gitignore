@@ -2,4 +2,4 @@
 *.swp
 *.map
 *.scssc
-
+node_modules
