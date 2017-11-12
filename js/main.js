@@ -118,6 +118,13 @@ function Game() {
             }
         }
     }
+    this.startGame = function() {
+        if (event.target.id == "oButton" || event.target.id == "xButton") {
+            console.log(event.target);
+            players.chooseCounter(event.target.innerHTML);
+            states.changeTo("gameBoard");
+        }
+    }
 
     this.cpuTurn = function() {
         /**
@@ -171,11 +178,11 @@ function Game() {
     }
     
     this.declareWinner = function(winner) {
-        states.changeTo("endgame");
-        var gameAlert = document.getElementById("alert");
-
-        gameAlert.innerHTML = winner + " Wins!";
-
+        setTimeout(() => {
+            states.changeTo("endgame");
+            var gameAlert = document.getElementById("alert");
+            gameAlert.innerHTML = winner + " Wins!";
+        }, 500);
     }
 
     this.reset = function() {
@@ -194,7 +201,7 @@ function Game() {
 
 window.onload = function() {
     /**
-     * Sets the initial variables and passes control to the main game handler.
+     * Sets the initial variables and event handlers.
      */
     var game = new Game();
     // Set the states to elements of the DOM
@@ -204,7 +211,7 @@ window.onload = function() {
 
     // Event lister for the counter choice
     var buttons = document.getElementById("buttons"); 
-    buttons.addEventListener("click", eventControler.chooseCounter);
+    buttons.addEventListener("click", game.startGame);
     
     var buttons = document.getElementById("gameBoard"); 
     buttons.addEventListener("click", game.playerTurn);
@@ -213,15 +220,3 @@ window.onload = function() {
     reset.addEventListener("click", game.reset);
 }
 
-var eventControler = { 
-    /**
-     * Controls the flow of the game
-     */
-    chooseCounter : function() {
-        if (event.target.id == "oButton" || event.target.id == "xButton") {
-            console.log(event.target);
-            players.chooseCounter(event.target.innerHTML);
-            states.changeTo("gameBoard");
-        }
-    },
-}

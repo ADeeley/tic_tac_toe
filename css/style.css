@@ -19,7 +19,8 @@
   font: 30px "Indie Flower"; }
 
 #counterOr {
-  display: inline-block; }
+  display: inline-block;
+  margin: 0; }
 
 .highlightLine {
   background-color: grey; }
