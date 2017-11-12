@@ -58,7 +58,7 @@ table tr td:last-child, table tr .highlightLine:last-child {
   margin: auto;
   display: block; }
 
-#mainBoard {
+#gameBoard {
   display: none; }
 
 #endGameAlert {

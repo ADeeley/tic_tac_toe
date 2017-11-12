@@ -67,36 +67,46 @@ function Game() {
                          ["3","6","9"],
                          ["1","5","9"], 
                          ["7","5","3"]]; 
+    var pendingCPUMove = false;
+    // Keep a reference to this object - used for event handling where
+    // "this" refers to the object that called the event.
+    var self = this;
 
     this.playerTurn = function() {
         console.log("Player turn");
-        let promise = new Promise(resolve, reject
-        document.getElementById("gameBoard").addEventListener("click", 
-    };
+        if (states.gameBoard.style.display === "block" &! pendingCPUMove) {
+            pendingCPUMove = true;
+            console.log("Player counter placed");
+            event.target.innerHTML = players.user;
+            self.cpuTurn();
+        }
+    }
 
     this.cpuTurn = function() {
         /**
          * Randomly places a counter for the CPU.
          */
-        var table = $("#gameBoard");
+        var table = document.getElementById("gameBoard");
+
+        // identify the free cells
         var freeCells = [];
-
-        // (1) identify the free cells
-        $("#gameBoard tr").each(function() {
-            $(this).find("td").each(function() {
-                let candidate = $(this);
-                if (candidate.html() == "") {
-                    freeCells.push(candidate);
+        var cell;
+        for (r=0; r<3; r++) {
+            for (c=0; c<3; c++) {
+                cell = table.rows[r].cells[c];
+                if (cell.innerHTML == "") {
+                    freeCells.push(cell);
                 }
-            })
-        })
-        if (freeCells.length <= 0) return;
-        // (2) choose one free cell using the heuristic of choice
-        var chosenCell = freeCells[Math.floor(Math.random() * freeCells.length)]
+            }
+        }
+        console.log(freeCells);
 
-        // (3) place counter in that cell
-        chosenCell.html(cpu.counter); 
-    };
+        if (freeCells.length <= 0) return;
+        // choose one free cell using the heuristic of choice
+        var choice = Math.floor(Math.random() * freeCells.length);
+        freeCells[choice].innerHTML = players.cpu;
+        pendingCPUMove = false;
+    }
 
     this.checkForEndgame = function() {
         /**
@@ -128,7 +138,7 @@ function Game() {
                 }
             }
         }
-    };
+    }
 
     this.highlightWinningLine = function(arr) {
         /**
@@ -137,25 +147,25 @@ function Game() {
         for (var i=0; i<arr.length; i++) {
             $("#"+arr[i]).addClass("highlightLine");
         }
-    };
+    }
 };
 
 window.onload = function() {
     /**
      * Sets the initial variables and passes control to the main game handler.
      */
+    var game = new Game();
     // Set the states to elements of the DOM
     states.counterChoice = document.getElementById("counterChoice");
-    states.gameBoard = document.getElementById("mainBoard");
+    states.gameBoard = document.getElementById("gameBoard");
     states.endGame = document.getElementById("endGameAlert");
 
     // Event lister for the counter choice
     var buttons = document.getElementById("buttons"); 
     buttons.addEventListener("click", eventControler.chooseCounter);
     
-
-
-
+    var buttons = document.getElementById("gameBoard"); 
+    buttons.addEventListener("click", game.playerTurn);
 }
 
 var eventControler = { 
@@ -165,13 +175,8 @@ var eventControler = {
     chooseCounter : function() {
         players.chooseCounter(event.target.innerHTML);
         states.changeTo("gameBoard");
-        eventControler.playGame();
     },
 
-    playGame : function() {
-        var game = new Game();
-        game.playerTurn();
-        console.log("Reached playgame");
         //add promise for user placing counter
         //user places counter
         //if user victory:
@@ -183,9 +188,4 @@ var eventControler = {
         //      else:
         //              add new player promise
         //      
-    }
-
 }
-
-
-
