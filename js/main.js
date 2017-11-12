@@ -26,8 +26,18 @@ function getCellsContaining(val) {
             }
         }
     }
-
     return chosenCells;
+}
+
+function clearAllCells() {
+    var table = document.getElementById("gameBoard");
+
+    for (r=0; r<3; r++) {
+        for (c=0; c<3; c++) {
+            table.rows[r].cells[c].innerHTML = "";
+            table.rows[r].cells[c].classList = "";
+        }
+    }
 }
 
 // State object ================================================
@@ -98,10 +108,13 @@ function Game() {
 
     this.playerTurn = function() {
         if (states.gameBoard.style.display === "block" &! pendingCPUMove &! endgame) {
-            pendingCPUMove = true;
-            event.target.innerHTML = players.user;
-            if (!self.checkForEndgame()){
-                setTimeout(self.cpuTurn, 1000);
+            var cell = event.target;
+            if (cell.innerHTML == "") {
+                pendingCPUMove = true;
+                cell.innerHTML = players.user;
+                if (!self.checkForEndgame()){
+                    setTimeout(self.cpuTurn, 1000);
+                }
             }
         }
     }
@@ -171,11 +184,7 @@ function Game() {
 
         var table = document.getElementById("gameBoard");
         console.log("Reseting");
-        for (r=0; r<3; r++) {
-            for (c=0; c<3; c++) {
-                table.rows[r].cells[c].innerHTML = "";
-            }
-        }
+        clearAllCells();
         states.changeTo("counterChoice");
         endgame = false;
         pendingCPUMove = false;
