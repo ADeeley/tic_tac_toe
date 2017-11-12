@@ -117,8 +117,8 @@ function Game() {
         var choice = Math.floor(Math.random() * freeCells.length);
         freeCells[choice].innerHTML = players.cpu;
 
-        self.checkForEndgame();
         pendingCPUMove = false;
+        self.checkForEndgame();
     }
 
     this.checkForEndgame = function() {
@@ -139,7 +139,7 @@ function Game() {
             for (var combo of winningCombos) {
                 if (cells.isSuperset(combo)) {
                     this.highlightWinningLine(combo);
-                    self.endgame = true;
+                    endgame = true;
                     self.declareWinner(counter);
                     return true;
                 }
@@ -159,11 +159,28 @@ function Game() {
     
     this.declareWinner = function(winner) {
         states.changeTo("endgame");
-        document.getElementById("endGameAlert").innerHTML = winner + " Wins!";
+        var gameAlert = document.getElementById("alert");
+
+        gameAlert.innerHTML = winner + " Wins!";
 
     }
 
+    this.reset = function() {
+        // loop over board - set all cells to "".
+        // set the game state to counerChoice
 
+        var table = document.getElementById("gameBoard");
+        console.log("Reseting");
+        for (r=0; r<3; r++) {
+            for (c=0; c<3; c++) {
+                table.rows[r].cells[c].innerHTML = "";
+            }
+        }
+        states.changeTo("counterChoice");
+        endgame = false;
+        pendingCPUMove = false;
+        console.log("Endgame =" + endgame + " CPUMove = " + pendingCPUMove);
+    }
 };
 
 window.onload = function() {
@@ -182,6 +199,9 @@ window.onload = function() {
     
     var buttons = document.getElementById("gameBoard"); 
     buttons.addEventListener("click", game.playerTurn);
+
+    var reset = document.getElementById("reset"); 
+    reset.addEventListener("click", game.reset);
 }
 
 var eventControler = { 

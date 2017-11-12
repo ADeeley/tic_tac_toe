@@ -21,6 +21,11 @@ $largeFont: "Indie Flower";
     background-color: black;
 }
 
+.resetButton {
+    @extend .counterChoiceButton;
+    font: 30px $largeFont;
+}
+
 #counterOr {
     display: inline-block;
 }
@@ -85,6 +90,7 @@ table tr td:last-child {
 
 #endGameAlert {
     @extend .base;
+    width: 300px;
     display: none;
     position: absolute;
     top: 50px;
@@ -105,9 +111,8 @@ table tr td:last-child {
     margin: auto auto 10% auto;
 }
 
-#alertBacking {
+#alert {
     @extend .base;
-    display: absolute;
-    background-color: grey;
-    opacity: 50%;
 }
+
+

@@ -1,9 +1,9 @@
-.base, .counterChoiceButton, td, .highlightLine, #counterChoice, #endGameAlert, #instructText, #alertBacking {
+.base, .counterChoiceButton, .resetButton, td, .highlightLine, #counterChoice, #endGameAlert, #instructText, #alert {
   text-align: center;
   font: 100px "Indie Flower";
   text-decoration: none; }
 
-.counterChoiceButton {
+.counterChoiceButton, .resetButton {
   font: 80px "Indie Flower";
   display: inline-block;
   margin: 20px;
@@ -14,6 +14,9 @@
   cursor: pointer;
   color: white;
   background-color: black; }
+
+.resetButton {
+  font: 30px "Indie Flower"; }
 
 #counterOr {
   display: inline-block; }
@@ -62,6 +65,7 @@ table tr td:last-child, table tr .highlightLine:last-child {
   display: none; }
 
 #endGameAlert {
+  width: 300px;
   display: none;
   position: absolute;
   top: 50px;
@@ -77,10 +81,5 @@ table tr td:last-child, table tr .highlightLine:last-child {
 
 #instructText {
   margin: auto auto 10% auto; }
-
-#alertBacking {
-  display: absolute;
-  background-color: grey;
-  opacity: 50%; }
 
 /*# sourceMappingURL=style.css.map */
