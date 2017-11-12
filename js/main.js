@@ -100,7 +100,7 @@ function Game() {
             pendingCPUMove = true;
             event.target.innerHTML = players.user;
             if (!self.checkForEndgame()){
-                self.cpuTurn();
+                setTimeout(self.cpuTurn, 1000);
             }
         }
     }
@@ -177,8 +177,11 @@ var eventControler = {
      * Controls the flow of the game
      */
     chooseCounter : function() {
-        players.chooseCounter(event.target.innerHTML);
-        states.changeTo("gameBoard");
+        if (event.target.id == "oButton" || event.target.id == "xButton") {
+            console.log(event.target);
+            players.chooseCounter(event.target.innerHTML);
+            states.changeTo("gameBoard");
+        }
     },
 
         //add promise for user placing counter
